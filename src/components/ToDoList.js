@@ -24,7 +24,8 @@ const ToDoList = () => {
             .then(addResult => {
                 handleSubmit(addResult)
                 reset()
-                console.log('Success:', addResult);
+                // console.log('Success:', addResult);
+                window.location.reload()
             })
     };
     //  Task send to DB Option function end---------------
@@ -49,7 +50,7 @@ const ToDoList = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data)
+                    // console.log(data)
                     const remainingTask = tasks.filter(task => task._id !== id)
                     setTasks(remainingTask)
                 })
