@@ -2,11 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 
 const ToDoList = () => {
+    const [isDone, setIsDone] = useState(-1);
+    const handleDoneTask = (index) => {
+        setIsDone(index);
+    };
     //  Task send to DB Option function start 
     const { register, handleSubmit, reset } = useForm();
+
     const onSubmit = data => {
         // console.log(data)
-        const url = `http://localhost:5000/task/`
+        const url = `https://sleepy-ridge-87663.herokuapp.com/task/`;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -26,7 +31,7 @@ const ToDoList = () => {
     //  Task Get from DB Option function start
     const [tasks, setTasks] = useState([]);
     useEffect(() => {
-        const url = `http://localhost:5000/task`;
+        const url = `https://sleepy-ridge-87663.herokuapp.com/task/`;
         fetch(url)
             .then(res => res.json())
             .then(data => setTasks(data))
@@ -35,16 +40,15 @@ const ToDoList = () => {
 
     //  Task Delete from DB & UI Option function start
     const handelForDeleteTask = id => {
-        const confirmDelete = window.confirm('Are you Sure to Delete the item');
+        const confirmDelete = window.confirm('Are you Sure to Delete the task');
         if (confirmDelete) {
-            const url = `http://localhost:5000/task/${id}`
+            const url = `https://sleepy-ridge-87663.herokuapp.com/task/${id}`;
             fetch(url, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
                 .then(data => {
                     console.log(data)
-
                     const remainingTask = tasks.filter(task => task._id !== id)
                     setTasks(remainingTask)
                 })
@@ -64,7 +68,7 @@ const ToDoList = () => {
                     <input type="submit" value='Add Task' id="add_btn" className="btn btn-danger" />
                 </form>
                 {/* Task send to DB Form end */}
-                {tasks.length}
+                {/* {tasks.length} */}
 
                 <div className="mt-5">
                     <table className="table text-start">
@@ -80,13 +84,13 @@ const ToDoList = () => {
 
                             {/* single task row start */}
                             {
-                                tasks.map(task => <tr id="table-content" key={task._id} >
-                                    <th scope="row">1</th>
-                                    <td>{task.name}</td>
+                                tasks.map((task, index) => <tr id="table-content" key={task._id} >
+                                    <th scope="row">{index + 1}</th>
+                                    <td className={isDone === index ? "doneClass" : null} >{task.name}</td>
                                     <td>{task.shortText}</td>
                                     <td className='text-end'>
-                                        <button  onClick={() => handelForDeleteTask(task._id)}  class="btn btn-danger delete_btn mx-1">Delete</button>
-                                        <button class="btn btn-success done_btn">Done</button>
+                                        <button onClick={() => handelForDeleteTask(task._id)} className="btn btn-danger delete_btn mx-1">Delete</button>
+                                        <button onClick={() => handleDoneTask(index)} className="btn btn-success done_btn">Done</button>
                                     </td>
                                 </tr>)
                             }
@@ -95,7 +99,6 @@ const ToDoList = () => {
                         </tbody>
                     </table>
                 </div>
-                {/* table  */}
             </div>
         </section>
     );
