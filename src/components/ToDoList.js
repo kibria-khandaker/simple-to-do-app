@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
+import { Link } from 'react-router-dom';
 
 const ToDoList = () => {
     const [isDone, setIsDone] = useState(-1);
@@ -65,7 +66,7 @@ const ToDoList = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className='d-flex flex-row gap-2  justify-content-center'>
                     <input placeholder='Task Name' {...register("name")} />
                     <textarea placeholder='Short Description' {...register("shortText")} />
-                    <input type="submit" value='Add Task' id="add_btn" className="btn btn-danger" />
+                    <input type="submit" value='Add Task' id="add_btn" className="btn btn-info" />
                 </form>
                 {/* Task send to DB Form end */}
                 {/* {tasks.length} */}
